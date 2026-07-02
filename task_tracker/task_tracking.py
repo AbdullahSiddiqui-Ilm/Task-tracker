@@ -22,14 +22,19 @@ def update_task(id, new_task):
     for i in task_db:
         if i['id'] == id:
             i['task'] = new_task
+        else:
+            print("ID does not exist in task records")
     with open("tasks.json", "w") as file:
         json.dump(task_db, file, indent=4)
 
 
 def update_status(id, new_status):
-    for i in task_db:
-        if i['id'] == id:
-            i['status'] = new_status
+    if not any(task["id"] == id for task in task_db):
+        print("ID was not found")
+    else:
+        for i in task_db:
+            if i['id'] == id:
+                i['status'] = new_status
     with open("tasks.json", "w") as file:
         json.dump(task_db, file, indent=4)
 
@@ -44,5 +49,7 @@ def delete_task(id):
 
 add_task(1, 'eat chicken', 'in progress')
 add_task(2, 'eat lamb', 'in progress')
+
+update_status(3, 'in progress')
             
 
