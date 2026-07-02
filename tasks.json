@@ -1,1 +1,12 @@
-[]
+[
+    {
+        "id": 1,
+        "task": "eat chicken",
+        "status": "in progress"
+    },
+    {
+        "id": 2,
+        "task": "eat lamb",
+        "status": "in progress"
+    }
+]
