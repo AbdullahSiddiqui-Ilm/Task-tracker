@@ -1,4 +1,21 @@
+
+import datetime
+import argparse
+import json
+from task_tracking import task_db
+
 task_db = []
+
+jsonfile = open('tasks.json', 'w')
+json.dump(task_db, jsonfile)
+jsonfile.close()
+
+if not jsonfile:
+    jsonfile = open('tasks.json', 'w')
+    json.dump(task_db, jsonfile)
+    jsonfile.close()
+else:
+    pass
 
 def __init__(self):
     pass
@@ -14,6 +31,12 @@ def update_task(id, new_task):
     for i in task_db:
         if i['id'] == id:
             i['task'] = new_task
+    return task_db
+
+def update_status(id, new_status):
+    for i in task_db:
+        if i['id'] == id:
+            i['status'] = new_status
     return task_db
 
 def delete_task(id):
