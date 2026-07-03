@@ -2,26 +2,32 @@
 import datetime
 import argparse
 import json
+import random
+import string
 
-task_db = []
-with open("tasks.json", "w") as f:
-    json.dump(task_db, f)
+task_db = [{}]
 
 
-def add_task(id, task, status):
-    task_db.append({
-        "id": id,
-        "task": task,
+def add_task(task_description, status="todo"):
+    random_id = ''.join(random.choices(string.digits, k=6))
+    task = {
+        "id": random_id,
+        "task": task_description,
         "status": status
-    })
-    with open("tasks.json", "w") as file:
-        json.dump(task_db, file, indent=4)
+    }
+    task_db.append(task)
+    with open("tasks.json", "a") as file:
+        json.dump(task, file, indent=4)
+    return task
 
 
 def update_task(id, new_task):
-    for i in task_db:
-        if i['id'] == id:
-            i['task'] = new_task
+    if not any(i["id"] == id for i in task_db):
+        print("ID was not found")
+    else:
+        for i in task_db:
+            if i['id'] == id:
+                i['task'] = new_task
         else:
             print("ID does not exist in task records")
     with open("tasks.json", "w") as file:
@@ -29,7 +35,7 @@ def update_task(id, new_task):
 
 
 def update_status(id, new_status):
-    if not any(task["id"] == id for task in task_db):
+    if not any(i["id"] == id for i in task_db):
         print("ID was not found")
     else:
         for i in task_db:
@@ -40,16 +46,36 @@ def update_status(id, new_status):
 
 
 def delete_task(id):
-    for i in task_db:
-        if i['id'] == id:
-            task_db.remove(i)
+    if not any(i["id"] == id for i in task_db):
+        print("ID was not found")
+    else:
+        for task in task_db:
+            if task['id'] == id:
+                task_db.remove(task)
             break
     with open("tasks.json", "w") as file:
         json.dump(task_db, file, indent=4)
 
-add_task(1, 'eat chicken', 'in progress')
-add_task(2, 'eat lamb', 'in progress')
 
-update_status(3, 'in progress')
-            
+        
+
+
+
+parser = argparse.ArgumentParser()
+
+subparsers = parser.add_subparsers(dest="command")
+
+parser_add = subparsers.add_parser("add")
+parser_add.add_argument("taskDescription")
+
+args = parser.parse_args()
+
+if args.taskDescription:
+    result = add_task(args.taskDescription)
+    print(f"Task successfully added, ID: {result['id']}")
+
+       
+
+
+
 
