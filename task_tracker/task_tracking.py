@@ -4,20 +4,27 @@ import argparse
 import json
 import random
 import string
+import os
 
-task_db = [{}]
+task_db =[]
+
+if not os.path.exists("tasks.json"):
+    with open("tasks.json", "w") as f:
+        json.dump(task_db, f)
 
 
 def add_task(task_description, status="todo"):
+    with open("tasks.json", "r") as f:
+        task_db_temp = json.load(f)  
     random_id = ''.join(random.choices(string.digits, k=6))
     task = {
         "id": random_id,
         "task": task_description,
         "status": status
     }
-    task_db.append(task)
-    with open("tasks.json", "a") as file:
-        json.dump(task, file, indent=4)
+    task_db_temp.append(task)
+    with open("tasks.json", "w") as file:
+        json.dump(task_db_temp, file, indent=4)
     return task
 
 
