@@ -99,11 +99,6 @@ elif args.command == "update-task":
         print(updated_task)
     else:
         print(f"Task auccessfully updated, ID {updated_task['id']}")
-   
-""" if updated_task == str:
-        print(updated_task)
-    else:
-        print(f"Task successfully updated, ID: {updated_task['id']}") """
 
 
 
