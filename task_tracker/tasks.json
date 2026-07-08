@@ -1,22 +1,7 @@
 [
     {
-        "id": "938241",
-        "task": "go to france",
-        "status": "todo"
-    },
-    {
-        "id": "079240",
-        "task": "Water plants",
-        "status": "todo"
-    },
-    {
-        "id": "220385",
-        "task": "Clean the kitchen",
-        "status": "todo"
-    },
-    {
-        "id": "969851",
-        "task": "chicken eating time",
+        "id": 344014,
+        "task": "Cook beef",
         "status": "todo"
     }
 ]
