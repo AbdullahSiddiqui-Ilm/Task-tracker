@@ -71,6 +71,15 @@ def delete_task(id):
         json.dump(task_db_temp, file, indent=4)
     return task
 
+def list_tasks():
+    with open ("tasks.json", "r") as f:
+        task_db_temp = json.load(f)
+    for i in task_db_temp:
+        print(i)
+    return
+
+    
+
 
         
 parser = argparse.ArgumentParser()
@@ -80,6 +89,7 @@ parser_add = subparsers.add_parser("add")
 parser_update_task = subparsers.add_parser("update-task")
 parser_update_status = subparsers.add_parser("update-status")
 parser_delete = subparsers.add_parser("delete-task")
+parser_list_tasks = subparsers.add_parser("list-tasks")
 
 parser_add.add_argument("task", nargs="?", default=None)
 
@@ -121,7 +131,9 @@ elif args.command == "delete-task":
         print("There are no tasks to be deleted.")
     else:
         print(f"Task {deleted_task['id']} has been deleted")
-        
+elif args.command == "list-tasks":
+    list_tasks()
+
 
 
 
