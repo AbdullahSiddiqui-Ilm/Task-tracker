@@ -121,6 +121,7 @@ elif args.command == "delete-task":
         print("There are no tasks to be deleted.")
     else:
         print(f"Task {deleted_task['id']} has been deleted")
+        
 
 
 
