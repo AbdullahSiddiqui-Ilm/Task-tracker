@@ -110,17 +110,17 @@ elif args.command == "update-status":
     if updated_status == "ID was not found":
         print(updated_status)
     elif updated_status['status'] == "in progress":
-        print(f"Updated status for task {updated_status['id']} to {updated_status['status']}")
+        print(f"Updated status for task {updated_status['id']} to: {updated_status['status']}")
     elif updated_status['status'] == "done":
         print(f"Updated status for task {updated_status['id']} to: {updated_status['status']}")
 elif args.command == "delete-task":
     deleted_task = delete_task(args.deleteTaskID)
     if deleted_task == str:
         print(deleted_task)
-    elif deleted_task == dict:
-        print(f"Task {deleted_task['id']} has been deleted")
-    else:
+    elif not deleted_task:
         print("There are no tasks to be deleted.")
+    else:
+        print(f"Task {deleted_task['id']} has been deleted")
 
 
 
