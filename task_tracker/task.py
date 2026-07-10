@@ -31,84 +31,64 @@ def add_task(task_description, status="todo"):
 def update_task(id, new_task):
     with open ("tasks.json", "r") as f:
         task_db_temp = json.load(f)
-    if not any(i["id"] == id for i in task_db_temp):
-        return "ID was not found"
-    else:
-        for i in task_db_temp:
-            if i['id'] == id:
-                i['task'] = new_task
-    with open("tasks.json", "w") as file:
-        json.dump(task_db_temp, file, indent=4)
-    return i
+    for task in task_db_temp:
+        if task['id'] == id:
+            task['task'] = new_task
+            with open("tasks.json", "w") as file:
+                json.dump(task_db_temp, file, indent=4)
+            return f"Updated task name for: {task['id']}, to: {task['task']}" 
+    return "ID was not found"
 
 
 
 def update_status(id, new_status):
-    new_status.lower()
     with open ("tasks.json", "r") as f:
         task_db_temp = json.load(f)
-    if not any(i["id"] == id for i in task_db_temp):
-        return "ID was not found"
-    else:
-        for i in task_db_temp:
-            if i['id'] == id:
-                i['status'] = new_status
-                return i
-    with open("tasks.json", "w") as file:
-        json.dump(task_db_temp, file, indent=4)
+    for task in task_db_temp:
+        if task['id'] == id:
+            task['status'] = new_status
+            with open("tasks.json", "w") as file:
+                json.dump(task_db_temp, file, indent=4)
+            return f"Updated status for task {task['id']} to: {task['status']}" 
+    return "ID was not found"
 
 
 def delete_task(id):
     with open ("tasks.json", "r") as f:
         task_db_temp = json.load(f)
-    if not any(i["id"] == id for i in task_db_temp):
+    updated_tasks = [task for task in task_db_temp if task['id'] != id]
+    if len(updated_tasks) == len(task_db_temp):
         return "ID was not found"
-    else:
-        for task in task_db_temp:
-            if task['id'] == id:
-                task_db_temp.remove(task)
     with open("tasks.json", "w") as file:
-        json.dump(task_db_temp, file, indent=4)
-    return task
+        json.dump(updated_tasks, file, indent=4)
+    return f"Task {id} has been deleted"
 
 def list_tasks():
     with open ("tasks.json", "r") as f:
         task_db_temp = json.load(f)
-    for i in task_db_temp:
-        print(i)
-    return
+    return task_db_temp
 
 def list_tasks_todo():
     with open ("tasks.json", "r") as f:
         task_db_temp = json.load(f)
-    for i in task_db_temp:
-        if i['status'] == "todo":
-            print(i)
-    return
+    return [i for i in task_db_temp if i['status'] == "todo"]
 
 def list_tasks_inprogress():
     with open ("tasks.json", "r") as f:
         task_db_temp = json.load(f)
-    for i in task_db_temp:
-        if i['status'] == "in progress":
-            print(i)
-    return
+    return [i for i in task_db_temp if i['status'] == "in progress"]
 
 def list_tasks_done():
     with open ("tasks.json", "r") as f:
         task_db_temp = json.load(f)
-    for i in task_db_temp:
-        if i['status'] == "done":
-            print(i)
-    return
+    return [i for i in task_db_temp if i['status'] == "done"]
 
-def list_tasks__not_done():
+def list_tasks_not_done():
     with open ("tasks.json", "r") as f:
         task_db_temp = json.load(f)
-    for i in task_db_temp:
-        if not i['status'] == "done":
-            print(i)
-    return
+    return [i for i in task_db_temp if not i['status'] == "done"]
+
+        
 
     
 parser = argparse.ArgumentParser()
@@ -133,7 +113,6 @@ parser_update_status.add_argument("updateStatusID", type=int)
 parser_update_status.add_argument("updateStatus")
 
 parser_delete.add_argument("deleteTaskID", type=int)
-parser_delete.add_argument("--deleteTask")
 
 
 args = parser.parse_args()
@@ -143,38 +122,45 @@ if args.command == "add":
     added_task = add_task(args.task)
     print(f"Task successfully added, ID: {added_task['id']}")
 elif args.command == "update-task":
-    updated_task = update_task(args.updateTaskID, args.updateTaskName)
-    if updated_task == str:
-        print(updated_task)
-    else:
-        print(f"Task auccessfully updated, ID {updated_task['id']}")
+    print(update_task(args.updateTaskID, args.updateTaskName))
 elif args.command == "update-status":
-    updated_status = update_status(args.updateStatusID, args.updateStatus)
-    if updated_status == str:
-        print(updated_status)
-    elif updated_status['status'] == "in progress":
-        print(update_status)
-        print(f"Updated status for task {updated_status['id']} to: {updated_status['status']}")
-    elif updated_status['status'] == "done":
-        print(f"Updated status for task {updated_status['id']} to: {updated_status['status']}")
+    print(update_status(args.updateStatusID, args.updateStatus))
 elif args.command == "delete-task":
-    deleted_task = delete_task(args.deleteTaskID)
-    if deleted_task == str:
-        print(deleted_task)
-    elif not deleted_task:
+    result = delete_task(args.deleteTaskID)
+    if not result:
         print("There are no tasks to be deleted.")
     else:
-        print(f"Task {deleted_task['id']} has been deleted")
+        print(result)
 elif args.command == "list-tasks":
-    list_tasks()
+    result = list_tasks()
+    if result:
+        print(result)
+    else:
+        print("There are no tasks")
 elif args.command == "list-todo":
-    list_tasks_todo()
+    result = list_tasks_todo()
+    if result:
+        print(result)
+    else:
+        print("There are no tasks todo")
 elif args.command == "list-inprogress":
-    list_tasks_inprogress()
+    result = list_tasks_inprogress()
+    if result:
+        print(result)
+    else:
+        print("There are no tasks in progress")
 elif args.command == "list-done":
-    list_tasks_done()
+    result = list_tasks_done()
+    if result:
+        print(result)
+    else:
+        print("No tasks are done")
 elif args.command == "list-not-done":
-    list_tasks_done()
+    result = list_tasks_not_done()
+    if result:
+        print(result)
+    else:
+        print("All tasks are done")
 
 
 
