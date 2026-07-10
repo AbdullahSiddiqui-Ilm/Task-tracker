@@ -6,16 +6,17 @@ import json
 import random
 import string
 import os
+from pathlib import Path
 
-task_db =[]
+TASK_FILE = Path.home() / ".task" / "tasks.json"
+TASK_FILE.parent.mkdir(exist_ok=True)
 
-if not os.path.exists("tasks.json"):
-    with open("tasks.json", "w") as f:
-        json.dump(task_db, f)
-
+if not TASK_FILE.exists():
+    with open(TASK_FILE, "w") as f:
+        json.dump([], f)
 
 def add_task(task_description, status="todo"):
-    with open("tasks.json", "r") as f:
+    with open(TASK_FILE, "r") as f:
         task_db_temp = json.load(f)
     timestamp = int(time.time())
     currentTime = datetime.datetime.fromtimestamp(timestamp)
@@ -28,13 +29,13 @@ def add_task(task_description, status="todo"):
         "updatedAt": str(currentTime)
     }
     task_db_temp.append(task)
-    with open("tasks.json", "w") as file:
+    with open(TASK_FILE, "w") as file:
         json.dump(task_db_temp, file, indent=4)
     return task
 
 
 def update_task(id, new_task):
-    with open ("tasks.json", "r") as f:
+    with open (TASK_FILE, "r") as f:
         task_db_temp = json.load(f)
     timestamp = int(time.time())
     currentTime = datetime.datetime.fromtimestamp(timestamp)
@@ -42,7 +43,7 @@ def update_task(id, new_task):
         if task['id'] == id:
             task['task'] = new_task
             task['updatedAt'] = str(currentTime)
-            with open("tasks.json", "w") as file:
+            with open(TASK_FILE, "w") as file:
                 json.dump(task_db_temp, file, indent=4)
             return f"Updated task name for: {task['id']}, to: {task['task']}" 
     return "ID was not found"
@@ -50,7 +51,7 @@ def update_task(id, new_task):
 
 
 def update_status(id, new_status):
-    with open ("tasks.json", "r") as f:
+    with open (TASK_FILE, "r") as f:
         task_db_temp = json.load(f)
     timestamp = int(time.time())
     currentTime = datetime.datetime.fromtimestamp(timestamp)
@@ -58,44 +59,44 @@ def update_status(id, new_status):
         if task['id'] == id:
             task['status'] = new_status
             task['updatedAt'] = str(currentTime)
-            with open("tasks.json", "w") as file:
+            with open(TASK_FILE, "w") as file:
                 json.dump(task_db_temp, file, indent=4)
             return f"Updated status for task {task['id']} to: {task['status']}" 
     return "ID was not found"
 
 
 def delete_task(id):
-    with open ("tasks.json", "r") as f:
+    with open (TASK_FILE, "r") as f:
         task_db_temp = json.load(f)
     updated_tasks = [task for task in task_db_temp if task['id'] != id]
     if len(updated_tasks) == len(task_db_temp):
         return "ID was not found"
-    with open("tasks.json", "w") as file:
+    with open(TASK_FILE, "w") as file:
         json.dump(updated_tasks, file, indent=4)
     return f"Task {id} has been deleted"
 
 def list_tasks():
-    with open ("tasks.json", "r") as f:
+    with open (TASK_FILE, "r") as f:
         task_db_temp = json.load(f)
     return task_db_temp
 
 def list_tasks_todo():
-    with open ("tasks.json", "r") as f:
+    with open (TASK_FILE, "r") as f:
         task_db_temp = json.load(f)
     return [i for i in task_db_temp if i['status'] == "todo"]
 
 def list_tasks_inprogress():
-    with open ("tasks.json", "r") as f:
+    with open (TASK_FILE, "r") as f:
         task_db_temp = json.load(f)
     return [i for i in task_db_temp if i['status'] == "in progress"]
 
 def list_tasks_done():
-    with open ("tasks.json", "r") as f:
+    with open (TASK_FILE, "r") as f:
         task_db_temp = json.load(f)
     return [i for i in task_db_temp if i['status'] == "done"]
 
 def list_tasks_not_done():
-    with open ("tasks.json", "r") as f:
+    with open (TASK_FILE, "r") as f:
         task_db_temp = json.load(f)
     return [i for i in task_db_temp if not i['status'] == "done"]
 
