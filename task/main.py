@@ -8,7 +8,7 @@ import string
 import os
 from pathlib import Path
 
-TASK_FILE = Path.home() / ".task" / "tasks.json"
+TASK_FILE = Path(__file__).parent.parent / "tasks.json"
 TASK_FILE.parent.mkdir(exist_ok=True)
 
 if not TASK_FILE.exists():
