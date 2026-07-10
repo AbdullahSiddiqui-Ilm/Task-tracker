@@ -3,5 +3,25 @@
         "id": 816764,
         "task": "Buy eggs",
         "status": "todo"
+    },
+    {
+        "id": 554467,
+        "task": "DSA study",
+        "status": "done"
+    },
+    {
+        "id": 384063,
+        "task": "Discrete maths",
+        "status": "todo"
+    },
+    {
+        "id": 502077,
+        "task": "revise maths",
+        "status": "in progress"
+    },
+    {
+        "id": 970554,
+        "task": "Go to gym",
+        "status": "todo"
     }
 ]
