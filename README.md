@@ -1,4 +1,4 @@
-# Taskly: CLI TODO App
+# Task: CLI TODO App
 
 ## 📖 Description
 
@@ -20,14 +20,14 @@ it allows you to **add, update, delete, list, and track tasks** from your termin
 
 - **task.py** → Core CLI implementation
   - `main()` → Entry point, parses CLI arguments and runs commands.
-  - `add_task(database, description)` → Adds a new task.
-  - `update_task(database, id, description?, status?)` → Updates description or status.
-  - `mark_in_progress_task(database, id)` → Marks a task as _in-progress_.
-  - `mark_done_task(database, id)` → Marks a task as _done_.
-  - `delete_task(database, id)` → Deletes a task.
-  - `list_task(database, status?, date?)` → Lists tasks with optional filters.
-
-- **test_taskly.py** → Unit tests for all features using `pytest`.
+  - `add_task(task_description, status="todo")` → Adds a new task.
+  - `update_task(id, new_task)` → Updates description or status.
+  - `list_tasks()` → Lists all tasks
+  - `list_tasks_todo()` → Lists tasks which are todo
+  - `list_tasks_inprogress()` → Lists tasks which are in progress
+  - `list_tasks_done()` → Lists tasks which are done
+  - `list_tasks_not_done()` → Lists tasks which are not done
+  - `delete_task(id)` → Deletes a task.
 
 - **pyproject.toml** → Project metadata, dependencies, and packaging config.
 
@@ -44,13 +44,19 @@ pip install git+https://github.com/AbdullahSiddiqui-Ilm/task.git
 ```bash
 $ task add [-h] description
 
-$ task update-task [-h] [-d description] [-s {done,in-progress,todo}] id
+$ task update-task [-h] [-d description] id
 
-$ task update-status
+$ task update-status [-h] [-d description] id
 
-$ task mark-done [-h] id
+$ task list-tasks
 
-$ task mark-in-progress [-h] id
+$ task list-inprogress
 
-$ taskly delete [-h] id
+$ task list-done
+
+$ task list-todo
+
+$ task list-not-done
+
+$ task delete-tasks [-h] id
 ```

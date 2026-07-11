@@ -102,79 +102,80 @@ def list_tasks_not_done():
 
         
 
-    
-parser = argparse.ArgumentParser()
-subparsers = parser.add_subparsers(dest="command")
+def main():
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers(dest="command")
 
-parser_add = subparsers.add_parser("add")
-parser_update_task = subparsers.add_parser("update-task")
-parser_update_status = subparsers.add_parser("update-status")
-parser_delete = subparsers.add_parser("delete-task")
-parser_list_tasks = subparsers.add_parser("list-tasks")
-parser_list_todo = subparsers.add_parser("list-todo")
-parser_list_inprogress = subparsers.add_parser("list-inprogress")
-parser_list_done = subparsers.add_parser("list-done")
-parser_list_not_done = subparsers.add_parser("list-not-done")
+    parser_add = subparsers.add_parser("add")
+    parser_update_task = subparsers.add_parser("update-task")
+    parser_update_status = subparsers.add_parser("update-status")
+    parser_delete = subparsers.add_parser("delete-task")
+    parser_list_tasks = subparsers.add_parser("list-tasks")
+    parser_list_todo = subparsers.add_parser("list-todo")
+    parser_list_inprogress = subparsers.add_parser("list-inprogress")
+    parser_list_done = subparsers.add_parser("list-done")
+    parser_list_not_done = subparsers.add_parser("list-not-done")
 
-parser_add.add_argument("task", nargs="?", default=None)
+    parser_add.add_argument("task", nargs="?", default=None)
 
-parser_update_task.add_argument("updateTaskID", type=int)
-parser_update_task.add_argument("updateTaskName")
+    parser_update_task.add_argument("updateTaskID", type=int)
+    parser_update_task.add_argument("updateTaskName")
 
-parser_update_status.add_argument("updateStatusID", type=int)
-parser_update_status.add_argument("updateStatus")
+    parser_update_status.add_argument("updateStatusID", type=int)
+    parser_update_status.add_argument("updateStatus")
 
-parser_delete.add_argument("deleteTaskID", type=int)
-
-
-args = parser.parse_args()
+    parser_delete.add_argument("deleteTaskID", type=int)
 
 
-if args.command == "add":
-    added_task = add_task(args.task)
-    print(f"Task successfully added, ID: {added_task['id']}")
-elif args.command == "update-task":
-    print(update_task(args.updateTaskID, args.updateTaskName))
-elif args.command == "update-status":
-    print(update_status(args.updateStatusID, args.updateStatus))
-elif args.command == "delete-task":
-    result = delete_task(args.deleteTaskID)
-    if not result:
-        print("There are no tasks to be deleted.")
-    else:
-        print(result)
-elif args.command == "list-tasks":
-    result = list_tasks()
-    if result:
-        print(result)
-    else:
-        print("There are no tasks")
-elif args.command == "list-todo":
-    result = list_tasks_todo()
-    if result:
-        print(result)
-    else:
-        print("There are no tasks todo")
-elif args.command == "list-inprogress":
-    result = list_tasks_inprogress()
-    if result:
-        print(result)
-    else:
-        print("There are no tasks in progress")
-elif args.command == "list-done":
-    result = list_tasks_done()
-    if result:
-        print(result)
-    else:
-        print("No tasks are done")
-elif args.command == "list-not-done":
-    result = list_tasks_not_done()
-    if result:
-        print(result)
-    else:
-        print("All tasks are done")
+    args = parser.parse_args()
 
 
+    if args.command == "add":
+        added_task = add_task(args.task)
+        print(f"Task successfully added, ID: {added_task['id']}")
+    elif args.command == "update-task":
+        print(update_task(args.updateTaskID, args.updateTaskName))
+    elif args.command == "update-status":
+        print(update_status(args.updateStatusID, args.updateStatus))
+    elif args.command == "delete-task":
+        result = delete_task(args.deleteTaskID)
+        if not result:
+            print("There are no tasks to be deleted.")
+        else:
+            print(result)
+    elif args.command == "list-tasks":
+        result = list_tasks()
+        if result:
+            print(result)
+        else:
+            print("There are no tasks")
+    elif args.command == "list-todo":
+        result = list_tasks_todo()
+        if result:
+            print(result)
+        else:
+            print("There are no tasks todo")
+    elif args.command == "list-inprogress":
+        result = list_tasks_inprogress()
+        if result:
+            print(result)
+        else:
+            print("There are no tasks in progress")
+    elif args.command == "list-done":
+        result = list_tasks_done()
+        if result:
+            print(result)
+        else:
+            print("No tasks are done")
+    elif args.command == "list-not-done":
+        result = list_tasks_not_done()
+        if result:
+            print(result)
+        else:
+            print("All tasks are done")
+
+if __name__ == "__main__":
+    main()
 
 
 
